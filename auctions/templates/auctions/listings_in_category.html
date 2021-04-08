@@ -1,0 +1,19 @@
+{% extends "auctions/layout.html" %}
+
+
+
+
+{% block title %}Category{% endblock %}
+
+{% block body %}
+
+    {% for listing in listings_in_category %}
+        <img src="/media/{{ listing.image }}" class="listing-image" width="100">
+        <h3><a href="{% url 'listing' listing.id %}">{{ listing }}</a></h3>
+        <h4>{{ listing.description }}</h4>
+        <h4>Starting bid: {{ listing.starting_bid }}$</h4>
+        <h4>Current bid: {{ listing.current_bid }}$</h4>
+        <br>
+    {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "auctions/layout.html" %}
+{% load bootstrap %}
+        <title>{% block title %}{{ listing.title }}{% endblock %}</title>
+
+{% block body %}
+
+
+
+        <img src="/media/{{ listing.image }}" class="listing-image" width="100">
+        {% if not is_active %}
+                <h6>(Not active)</h6>
+                <h6>The winner is {{ winner }}</h6>
+        {% endif %}
+        <h3>{{ listing }}</h3>
+        <h4>{{ listing.description }}</h4>
+        <h4>Starting bid: {{ listing.starting_bid }}$</h4>
+        <h4>Current bid: {{ listing.current_bid }}$</h4>
+        {% if is_active %}
+        <form action="{% url 'make_bid' listing.id %}" method="post">
+                {% csrf_token %}
+                {{ form_bid|bootstrap }}
+                <input type="submit", value="Bid!">
+        </form>
+        {% endif %}
+        <br>
+        {% if is_in_watchlist %}
+                <h5>This listing is in your watchlist</h5>
+                <h5><a href="{% url 'remove_from_watchlist' listing.id%}" style="margin-bottom: 20px">Remove from watchlist</a></h5>
+        {% else %}
+                <a href="{% url 'add_to_watchlist' listing.id%}" style="margin-bottom: 20px">Add to watchlist</a>
+        {% endif %}
+
+
+        {% for comment in comments %}
+                <h5 style="color: blue">{{ comment.user.username }}:</h5>
+                <p style="margin-left: 15px">{{ comment.comment_content }}</p>
+                <br>
+        {% endfor %}
+
+
+                {% if comment_form_is_active %}
+                        <form method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{ form|bootstrap }}
+                                <input type="submit", value="Send">
+                        </form>
+                {% else %}
+                        <h5><a href="{% url 'leave_comment' listing.id %}">Leave a comment</a></h5>
+                {% endif %}
+                {% if is_active and is_creator %}
+                        <h5><a href="{% url 'close_auction' listing.id %}">Close auction</a></h5>
+                {% endif %}
+
+{% endblock %}

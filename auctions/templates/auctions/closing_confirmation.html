@@ -1,0 +1,18 @@
+{% extends "auctions/layout.html" %}
+
+        <title>{% block title %}Closing confirmation{% endblock %}</title>
+
+{% block body %}
+
+    <h3 style="color: red">Do you really want to close this auction?</h3>
+    <h4>If you close the auction, the winner will be user {{winner }} who propose a price {{ listing.current_bid }}$</h4>
+    <img src="/media/{{ listing.image }}" class="listing-image" width="100">
+    <h3>{{ listing }}</h3>
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit", value="Confirm">
+        <a href="{% url 'listing' listing.id %}">Cancel</a>
+
+    </form>
+
+{% endblock %}
