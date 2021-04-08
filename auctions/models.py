@@ -8,7 +8,6 @@ class User(AbstractUser):
 
 class Category(models.Model):
     name = models.CharField('Category name', max_length=255, blank=True, null=True)
-
     def __str__(self):
         return self.name
 

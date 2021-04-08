@@ -5,12 +5,25 @@
 {% block body %}
     <h2>Active Listings</h2>
     {% for listing in listings %}
-        <img src="/media/{{ listing.image }}" class="listing-image" width="100">
-        <h3><a href="{% url 'listing' listing.id %}">{{ listing }}</a></h3>
-        <h4>{{ listing.description }}</h4>
-        <h4>Starting bid: {{ listing.starting_bid }}$</h4>
-        <h4>Current bid: {{ listing.current_bid }}$</h4>
-        <br>
 
+        <div class="card" style="width: 50rem; margin-bottom: 10px">
+
+            <div class="row">
+                <div class="col-3">
+                    <img src="/media/{{ listing.image }}" class="card-img-top" width="100">
+                </div>
+
+                <div class="col-5">
+                    <h5 class="card-title"><a href="{% url 'listing' listing.id %}">{{ listing }}</a></h5>
+                    <p class="card-text">{{ listing.description }}</p>
+                </div>
+
+                <div class="col-4">
+                    <p class="card-text">Starting bid: {{ listing.starting_bid }}$</p>
+                    <p class="card-text">Current bid: {{ listing.current_bid }}$</p>
+                </div>
+
+        </div>
+        </div>
     {% endfor %}
 {% endblock %}

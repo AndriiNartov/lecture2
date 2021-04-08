@@ -5,50 +5,91 @@
 {% block body %}
 
 
+        <div class="card" style="width: 50rem; margin-bottom: 10px;">
 
-        <img src="/media/{{ listing.image }}" class="listing-image" width="100">
-        {% if not is_active %}
-                <h6>(Not active)</h6>
-                <h6>The winner is {{ winner }}</h6>
+            <div class="row">
+                <div class="col-3">
+                    <img src="/media/{{ listing.image }}" class="card-img-top" width="100">
+                </div>
+
+                <div class="col-4">
+                    <h5 class="card-title">{{ listing }}</h5>
+                    <p class="card-text">{{ listing.description }}</p>
+                </div>
+
+                <div class="col-3">
+                    <p class="card-text">Starting bid: {{ listing.starting_bid }}$</p>
+                    <p class="card-text">Current bid: {{ listing.current_bid }}$</p>
+                </div>
+
+                <div class="col-2">
+                        {% if is_active and is_creator %}
+                        <h5><a href="{% url 'close_auction' listing.id %}" class="btn btn-danger">Close</a></h5>
+                    {% endif %}
+                    {% if is_in_watchlist %}
+                        <h6 class="badge bg-secondary">Watchlist</h6>
+                    {% endif %}
+                </div>
+
+        </div>
+        </div>
+        {% if not is_active and is_creator %}
+        <div class="card" style="width: 50rem; margin-bottom: 10px">
+                <p style="color: red;">This auction is not alredy active. The winner is {{ winner }}</p>
+        </div>
         {% endif %}
-        <h3>{{ listing }}</h3>
-        <h4>{{ listing.description }}</h4>
-        <h4>Starting bid: {{ listing.starting_bid }}$</h4>
-        <h4>Current bid: {{ listing.current_bid }}$</h4>
-        {% if is_active %}
-        <form action="{% url 'make_bid' listing.id %}" method="post">
-                {% csrf_token %}
-                {{ form_bid|bootstrap }}
-                <input type="submit", value="Bid!">
-        </form>
+
+
+
+
+
+
+        {% if is_active and not is_creator %}
+        <div class="card" style="width: 20rem; margin-bottom: 10px;">
+                <form action="{% url 'make_bid' listing.id %}" method="post">
+                        {% csrf_token %}
+                        {{ form_bid|bootstrap }}
+                        <input type="submit" value="Bid!" class="btn btn-primary">
+                </form>
+        </div>
         {% endif %}
+
+
         <br>
         {% if is_in_watchlist %}
-                <h5>This listing is in your watchlist</h5>
-                <h5><a href="{% url 'remove_from_watchlist' listing.id%}" style="margin-bottom: 20px">Remove from watchlist</a></h5>
+                <h5><a href="{% url 'remove_from_watchlist' listing.id%}" class="btn btn-danger">Remove from watchlist</a></h5>
         {% else %}
-                <a href="{% url 'add_to_watchlist' listing.id%}" style="margin-bottom: 20px">Add to watchlist</a>
+                <a href="{% url 'add_to_watchlist' listing.id%}" class="btn btn-success">Add to watchlist</a>
         {% endif %}
 
 
-        {% for comment in comments %}
-                <h5 style="color: blue">{{ comment.user.username }}:</h5>
-                <p style="margin-left: 15px">{{ comment.comment_content }}</p>
-                <br>
-        {% endfor %}
+                {% for comment in comments %}
+                <div class="card" style="width: 30rem">
+                        <div class="card-title">
+                                <h5 style="color: blue">{{ comment.user.username }}:</h5>
+                        </div>
+                        <div class="card-text">
+                                <p style="margin-left: 15px">{{ comment.comment_content }}</p>
+                        </div>
+                </div>
+                {% endfor %}
+
+
 
 
                 {% if comment_form_is_active %}
                         <form method="post" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 {{ form|bootstrap }}
-                                <input type="submit", value="Send">
+                                <input type="submit", value="Send" class="btn btn-primary">
                         </form>
                 {% else %}
-                        <h5><a href="{% url 'leave_comment' listing.id %}">Leave a comment</a></h5>
+                        <h5><a href="{% url 'leave_comment' listing.id %}" class="btn btn-primary">Leave a comment</a></h5>
                 {% endif %}
-                {% if is_active and is_creator %}
-                        <h5><a href="{% url 'close_auction' listing.id %}">Close auction</a></h5>
-                {% endif %}
+
+
+
+
+
 
 {% endblock %}

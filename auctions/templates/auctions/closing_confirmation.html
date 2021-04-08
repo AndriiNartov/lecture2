@@ -1,4 +1,5 @@
 {% extends "auctions/layout.html" %}
+{% load bootstrap %}
 
         <title>{% block title %}Closing confirmation{% endblock %}</title>
 
@@ -10,9 +11,8 @@
     <h3>{{ listing }}</h3>
     <form method="post">
         {% csrf_token %}
-        <input type="submit", value="Confirm">
-        <a href="{% url 'listing' listing.id %}">Cancel</a>
-
+        <input type="submit" value="Confirm" class="btn btn-primary">
+        <a href="{% url 'listing' listing.id %}" class="btn btn-danger">Cancel</a>
     </form>
 
 {% endblock %}

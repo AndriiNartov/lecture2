@@ -153,6 +153,8 @@ def show_listing(request, id):
         'winner': winner,
         'is_creator': bool(request.user == listing.creator_user)
     })
+
+
 @login_required
 def create_listing(request):
     user = request.user
@@ -167,6 +169,7 @@ def create_listing(request):
     return render(request, 'auctions/create_listing.html', {
         'form': form,
     })
+
 
 @login_required
 def leave_comment(request, id):
@@ -192,6 +195,7 @@ def leave_comment(request, id):
         'comment_form_is_active': comment_form_is_active,
         'form': form,
     })
+
 
 @login_required
 def make_bid(request, id):
@@ -220,7 +224,6 @@ def make_bid(request, id):
     listing.current_bid = listing_current_bid
     listing.save()
     return show_listing(request=request, id=id)
-
 
 
 def find_current_bid_for_listing(id):
